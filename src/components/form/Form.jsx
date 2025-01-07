@@ -1,11 +1,21 @@
 import React, { useState } from "react";
-import { Button, Checkbox, CheckboxGroup, Modal, Text } from "@mantine/core";
+import { Button, Checkbox, CheckboxGroup, Flex, Modal, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import Result from "../result/Result";
+import './form.css'
 
 const Form = () => {
   const [result, setResult] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
+
+  const formData = [
+    {
+      question: "1. Общие симптомы",
+      answer: [{title: "Лихорадка ≥38°C", checked: false}, {title: "Потеря веса >2 кг", checked: false}],
+      score: ""
+    }
+  ]
 
   const form = useForm({
     initialValues: {
@@ -22,35 +32,41 @@ const Form = () => {
   });
 
   const submitForm = (values) => {
+    console.log(form)
     const score = Object.values(values)
       .flat()
       .reduce((acc, curr) => {
         return (acc += parseInt(Number(curr)));
       }, 0);
 
-    if (score <= 5) setResult("низкая активность заболевания или ремиссия");
-    if (score >= 6 && score <= 10) setResult("умеренная активность");
+    if (score <= 5) setResult(`${score}б. Низкая активность заболевания или ремиссия`);
+    if (score >= 6 && score <= 10) setResult(`${score}б. Умеренная активность`);
     if (score > 10)
-      setResult("высокая активность, требующая интенсивного лечения");
+      setResult(`${score}б. Высокая активность, требующая интенсивного лечения`);
 
     setTimeout(() => {
       open()
     }, 100)
   };
 
-  return (
-    <>
-      <div className="form-wrapper" onSubmit={form.onSubmit(submitForm)}>
-        <h2>Выберите симптомы для каждой категории:</h2>
+  function handleFormReset() {
+    form.reset()
+    setResult("")
+  }
 
-        <form action="">
+  return (
+    <div className="form">
+      <div className="form-wrapper" onSubmit={form.onSubmit(submitForm)}>
+        <h2>Выберите симптомы (при наличии) для каждой категории:</h2>
+
+        <form action="" onReset={handleFormReset}>
           <CheckboxGroup
             label="1. Общие симптомы"
             {...form.getInputProps("question1")}
             mt="md"
           >
-            <Checkbox mt="md" value="3.1" label="Лихорадка ≥38°C" />
-            <Checkbox mt="sm" value="3.2" label="Потеря веса >2 кг" />
+            <Checkbox mt="md" value="3.1" label="Лихорадка ≥38°C (3)" />
+            <Checkbox mt="sm" value="3.2" label="Потеря веса >2 кг (3)" />
           </CheckboxGroup>
 
           <CheckboxGroup
@@ -58,8 +74,8 @@ const Form = () => {
             {...form.getInputProps("question2")}
             mt="md"
           >
-            <Checkbox mt="md" value="3" label="Пурпура" />
-            <Checkbox mt="sm" value="6" label="Язвы на коже/гангрена" />
+            <Checkbox mt="md" value="3" label="Пурпура (3)" />
+            <Checkbox mt="sm" value="6" label="Язвы на коже/гангрена (6)" />
           </CheckboxGroup>
 
           <CheckboxGroup
@@ -67,8 +83,8 @@ const Form = () => {
             {...form.getInputProps("question3")}
             mt="md"
           >
-            <Checkbox mt="md" value="3" label="Язвы на слизистых оболочках" />
-            <Checkbox mt="sm" value="6" label="Увеит" />
+            <Checkbox mt="md" value="3" label="Язвы на слизистых оболочках (3)" />
+            <Checkbox mt="sm" value="6" label="Увеит (6)" />
           </CheckboxGroup>
 
           <CheckboxGroup
@@ -79,12 +95,12 @@ const Form = () => {
             <Checkbox
               mt="md"
               value="3"
-              label="Эпистаксис (носовое кровотечение), корки или другие воспалительные изменения носа"
+              label="Эпистаксис (носовое кровотечение), корки или другие воспалительные изменения носа (3)"
             />
             <Checkbox
               mt="sm"
               value="6"
-              label="Перфорация носовой перегородки или разрушение костей (например, седловидная деформация носа)"
+              label="Перфорация носовой перегородки или разрушение костей (например, седловидная деформация носа) (6)"
             />
           </CheckboxGroup>
 
@@ -96,12 +112,12 @@ const Form = () => {
             <Checkbox
               mt="md"
               value="3"
-              label="Хрипы, одышка или признаки бронхиальной обструкции"
+              label="Хрипы, одышка или признаки бронхиальной обструкции (3)"
             />
             <Checkbox
               mt="sm"
               value="6"
-              label="Лёгочное кровотечение или поражения лёгких (по данным визуализации)"
+              label="Лёгочное кровотечение или поражения лёгких (по данным визуализации) (6)"
             />
           </CheckboxGroup>
 
@@ -113,9 +129,9 @@ const Form = () => {
             <Checkbox
               mt="md"
               value="3"
-              label="Перемежающаяся хромота (ишемия конечностей)"
+              label="Перемежающаяся хромота (ишемия конечностей) (3)"
             />
-            <Checkbox mt="sm" value="6" label="Перикардит" />
+            <Checkbox mt="sm" value="6" label="Перикардит (6)"/>
           </CheckboxGroup>
 
           <CheckboxGroup
@@ -126,12 +142,12 @@ const Form = () => {
             <Checkbox
               mt="md"
               value="3"
-              label="Боль в животе (вызванная ишемией)"
+              label="Боль в животе (вызванная ишемией) (3)"
             />
             <Checkbox
               mt="sm"
               value="6"
-              label="Желудочно-кишечное кровотечение (гематохезия, мелена)"
+              label="Желудочно-кишечное кровотечение (гематохезия, мелена) (6)"
             />
           </CheckboxGroup>
 
@@ -140,11 +156,11 @@ const Form = () => {
             {...form.getInputProps("question8")}
             mt="md"
           >
-            <Checkbox mt="md" value="6" label="Гематурия (эритроциты в моче)" />
+            <Checkbox mt="md" value="6" label="Гематурия (эритроциты в моче) (6)" />
             <Checkbox
               mt="sm"
               value="9"
-              label="Почечная недостаточность (повышение уровня креатинина, снижение скорости клубочковой фильтрации)"
+              label="Почечная недостаточность (повышение уровня креатинина, снижение скорости клубочковой фильтрации) (9)"
             />
           </CheckboxGroup>
 
@@ -156,31 +172,29 @@ const Form = () => {
             <Checkbox
               mt="md"
               value="6"
-              label="Мононейропатия (например, поражение одной конечности) "
+              label="Мононейропатия (например, поражение одной конечности) (6)"
             />
             <Checkbox
               mt="sm"
               value="9"
-              label="Церебральный васкулит (неврологический дефицит, связанный с воспалением сосудов)"
+              label="Церебральный васкулит (неврологический дефицит, связанный с воспалением сосудов) (9)"
             />
           </CheckboxGroup>
 
-          <Button type="submit" mt="xl">
-            Отправить
-          </Button>
+          <Flex direction="column"  style={{maxWidth: "200px", marginLeft: "auto", marginRight: "auto"}} mt="xl" justify="center">
+            <Button type="submit">
+              Отправить
+            </Button>
+            <Button type="reset" mt="md" variant="outline">
+              Очистить ввод
+            </Button>
+          </Flex>
         </form>
       </div>
-      <Modal withinPortal={false} opened={opened} onClose={close} title="Результаты тестирования">
-        <Text fw={700} ta='left' style={{width: '400px'}}>
-          Результат: {result}
-        </Text>
-        <Text ta='left' mt='md'>
-        ВАЖНО: Данный калькулятор является вспомогательным инструментом и не заменяет консультацию врача. 
-        Если у вас выявлены симптомы васкулита или есть повышенные значения BVAS, обязательно обратитесь к специалисту для 
-        уточнения диагноза и назначения лечения.
-        </Text>
+      <Modal centered withinPortal={false} opened={opened} onClose={close} title="Результаты тестирования">
+        <Result result={result} answers={form.values}/>
       </Modal>
-    </>
+    </div>
   );
 };
 

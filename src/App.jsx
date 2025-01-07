@@ -1,4 +1,4 @@
-import { createTheme, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import './App.css'
 import Form from './components/form/Form'
 import Header from './components/header/Header'

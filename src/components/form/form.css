@@ -1,0 +1,8 @@
+.form {
+    max-width: 792px;
+    margin: 0 auto;
+}
+
+.mantine-Modal-inner {
+    left: 0;
+}
