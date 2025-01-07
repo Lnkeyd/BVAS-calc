@@ -9,14 +9,6 @@ const Form = () => {
   const [result, setResult] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
 
-  const formData = [
-    {
-      question: "1. Общие симптомы",
-      answer: [{title: "Лихорадка ≥38°C", checked: false}, {title: "Потеря веса >2 кг", checked: false}],
-      score: ""
-    }
-  ]
-
   const form = useForm({
     initialValues: {
       question1: "",
